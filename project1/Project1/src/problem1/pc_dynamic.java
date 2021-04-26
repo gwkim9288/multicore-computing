@@ -1,7 +1,7 @@
 package problem1;
 
 public class pc_dynamic {
-	private final static int NUM_THREAD = 10;
+	private final static int NUM_THREAD = 32;
 	static MyThreadDynamic[] threads;
 	private final static int NUM_END = 200000;
 	private static int count =0;

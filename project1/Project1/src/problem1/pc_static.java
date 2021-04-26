@@ -1,7 +1,7 @@
 package problem1;
 
 public class pc_static {
-	private final static int NUM_THREAD = 6;
+	private final static int NUM_THREAD = 4;
 	static MyThread[] threads;
 	final static int NUM_END = 200000;
 	private static int count =0;

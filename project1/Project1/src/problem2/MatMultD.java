@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class MatMultD {
 	private static Scanner sc = new Scanner(System.in);
+	static int[][] c;
 	  public static void main(String [] args)
 	  {
 	    int thread_no=0;
@@ -12,8 +13,7 @@ public class MatMultD {
 	    MyThread[] threads = new MyThread[thread_no];
 	    int a[][]=readMatrix();
 	    int b[][]=readMatrix();
-	    int sum =0;
-	    
+	    c = new int [a[0].length][b[0].length];
 	    long startTime = System.currentTimeMillis();
 	    int len = b.length;
 	    int start =0;
@@ -24,10 +24,10 @@ public class MatMultD {
 	    	start +=size;
 	    	threads[i].start();
 	    }
+
 	    try {
 	    	for(int i=0;i<thread_no;i++) {
 		    	threads[i].join();
-		    	sum += threads[i].getSum();
 		    }
 	    } catch (InterruptedException e) {}
 	    
@@ -35,7 +35,8 @@ public class MatMultD {
 	    long endTime = System.currentTimeMillis();
 	    long diff = endTime - startTime;
 	    
-	    System.out.println("sum of elements: "+sum+" Excution time: "+ diff );
+	    printMatrix(c);
+	    System.out.println("Excution time: "+ diff );
 	 
 	  }
 
@@ -50,6 +51,24 @@ public class MatMultD {
 	       }
 	       return result;
 	   }
+	   
+	   public static void printMatrix(int[][] mat) {
+		   System.out.println("Matrix["+mat.length+"]["+mat[0].length+"]");
+		     int rows = mat.length;
+		     int columns = mat[0].length;
+		     int sum = 0;
+		     for (int i = 0; i < rows; i++) {
+		       for (int j = 0; j < columns; j++) {
+		         System.out.printf("%4d " , mat[i][j]);
+		         sum+=mat[i][j];
+		       }
+		       System.out.println();
+		     }
+		     System.out.println();
+		     System.out.println("Matrix Sum = " + sum + "\n");
+	   }
+	   
+	   
 
 }
 
@@ -57,7 +76,6 @@ class MyThread extends Thread{
 	private int num;
 	private int[][] a;
 	private int[][] b;
-	private int sum=0;
 	private int size;
 	private int start;
 	
@@ -71,14 +89,13 @@ class MyThread extends Thread{
 	
 	public void run() {
 		int n = a[0].length;
-	    int m = a.length;
 	    int p = b[0].length;
 	    long startTime = System.currentTimeMillis();
 
 		for(int i = start;i<start+size;i++) {
 			for(int j=0;j<p;j++) {
 				for(int k=0 ; k<n;k++) {
-					sum += a[i][k] * b[k][j];
+			        MatMultD.c[i][j] += a[i][k] * b[k][j];
 				}
 			}
 		}
@@ -88,7 +105,4 @@ class MyThread extends Thread{
 
 	}
 	
-	public int getSum() {
-		return sum;
-	}
 }
